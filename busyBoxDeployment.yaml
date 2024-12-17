@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busy-box-deployment
+spec:
+  replicas: 4
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: busy-box-deployment
+  template:
+    metadata:
+      labels:
+        app: busy-box-deployment
+    spec:
+      containers:
+        - name: busybox
+          image: busybox
+          command:
+            - sleep
+            - "3600"
+      nodeSelector:
+        disktype: ssd
